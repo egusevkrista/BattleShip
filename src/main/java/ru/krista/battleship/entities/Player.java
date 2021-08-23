@@ -12,15 +12,7 @@ public class Player implements Serializable {
     @Inject
     private GameManager manager;
 
-    private Opponent op = manager.getOpponent();
-
-    private Winner winner = manager.getWinner();
-
     private boolean turn = true;
-
-    public Opponent getOp() {
-        return op;
-    }
 
     public String getName() {
         return name;
@@ -40,12 +32,12 @@ public class Player implements Serializable {
 
     public void fire(int x, int y) {
         if ((x > 0 && x < 11) && (y > 0 && y < 11)) {
-            if (op.getField().hitted(x, y)) {
+            if (manager.getOpponent().getField().hitted(x, y)) {
                 field.markWhenHitted(x, y);
                 if (checkWin()) return;
             } else {
                 field.markWhenEmpty(x, y);
-                op.fire();
+                manager.getOpponent().fire();
             }
         }
     }
@@ -55,10 +47,10 @@ public class Player implements Serializable {
     }
 
     public boolean checkWin() {
-        if (op.getField().getHP() == 0) {
-            winner.setName(this.name);
-            winner.setDate();
-            winner.win();
+        if (manager.getOpponent().getField().getHP() == 0) {
+            manager.getWinner().setName(this.name);
+            manager.getWinner().setDate();
+            manager.getWinner().win();
             return true;
         }
         return false;
