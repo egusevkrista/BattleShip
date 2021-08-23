@@ -1,6 +1,5 @@
 package ru.krista.battleship.entities;
 
-import javax.enterprise.inject.Produces;
 import java.io.Serializable;
 import java.util.Random;
 
@@ -14,10 +13,6 @@ public class Field implements Serializable {
     private int countFourDeck = 0;
 
     private int hp = 20;
-
-    public void startGame() {
-        fillInactiveCells();
-    }
 
     private boolean checkCountShips(int size) {
         switch (size) {
@@ -53,7 +48,7 @@ public class Field implements Serializable {
         return 0;
     }
 
-    private void fillInactiveCells() {
+    public void fillInactiveCells() {
         for (int i = 0; i < 12; i++) {
             mainField[i][0] = mainField[i][11] = -1;
         }

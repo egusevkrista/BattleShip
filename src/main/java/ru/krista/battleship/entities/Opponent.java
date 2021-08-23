@@ -1,29 +1,26 @@
 package ru.krista.battleship.entities;
 
-import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
-import javax.inject.Named;
-import javax.ws.rs.Produces;
 import java.io.Serializable;
 import java.util.Random;
 
-@SessionScoped
 public class Opponent implements Serializable {
 
     @Inject
     private Field field;
 
     @Inject
-    private Player player;
+    private GameManager manager;
 
-    @Inject
-    private Winner winner;
+    private Player player = manager.getPlayer();
+
+    private Winner winner = manager.getWinner();
+
+    private boolean turn = false;
 
     public Player getPlayer() {
         return player;
     }
-
-    private boolean turn = false;
 
     public boolean getTurn() {
         return turn;
@@ -31,6 +28,11 @@ public class Opponent implements Serializable {
 
     public Field getField() {
         return field;
+    }
+
+    public void startGame() {
+        field.fillInactiveCells();
+        field.fullShipsRandom();
     }
 
     public void fire() {

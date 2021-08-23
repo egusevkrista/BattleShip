@@ -1,13 +1,8 @@
 package ru.krista.battleship.entities;
 
-import javax.ejb.Stateful;
-import javax.ejb.Stateless;
-import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.io.Serializable;
 
-@SessionScoped
 public class Player implements Serializable {
     private String name;
 
@@ -15,10 +10,11 @@ public class Player implements Serializable {
     private Field field;
 
     @Inject
-    private Opponent op;
+    private GameManager manager;
 
-    @Inject
-    private Winner winner;
+    private Opponent op = manager.getOpponent();
+
+    private Winner winner = manager.getWinner();
 
     private boolean turn = true;
 
@@ -36,6 +32,10 @@ public class Player implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void startGame() {
+        field.fillInactiveCells();
     }
 
     public void fire(int x, int y) {

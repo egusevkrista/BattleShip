@@ -1,13 +1,10 @@
 package ru.krista.battleship.entities;
 
-import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 import java.util.Date;
 
-@SessionScoped
 public class Winner implements Serializable {
 
     private String name;
