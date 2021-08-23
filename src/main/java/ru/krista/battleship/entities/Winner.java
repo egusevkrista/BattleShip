@@ -13,7 +13,6 @@ public class Winner implements Serializable {
     private String name;
     private Date date;
 
-
     @Inject
     private HttpSession session;
 
@@ -22,22 +21,17 @@ public class Winner implements Serializable {
     public void win() {
         gameIsEnded = true;
         session.invalidate();
-    };
+    }
 
-    public boolean getGameIsEnded()
-    {
+    public boolean getGameIsEnded() {
         return gameIsEnded;
     }
 
-    public Winner() {}
-
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public void setDate()
-    {
+    public void setDate() {
         this.date = new Date();
     }
 }

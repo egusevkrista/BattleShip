@@ -13,57 +13,47 @@ public class Opponent implements Serializable {
     @Inject
     private Field field;
 
-    public Opponent() {}
-
     @Inject
     private Player player;
 
     @Inject
     private Winner winner;
 
-    public Player getPlayer()
-    {
+    public Player getPlayer() {
         return player;
     }
 
     private boolean turn = false;
 
-    public boolean getTurn()
-    {
+    public boolean getTurn() {
         return turn;
     }
 
-    public Field getField(){
+    public Field getField() {
         return field;
     }
 
-    public void fire()
-    {
+    public void fire() {
         Random r = new Random();
-        int x = r.nextInt(10)+1;
-        int y = r.nextInt(10)+1;
+        int x = r.nextInt(10) + 1;
+        int y = r.nextInt(10) + 1;
 
-        while (!field.normalTarget(x,y)){
+        while (!field.normalTarget(x, y)) {
             x = r.nextInt(10) + 1;
             y = r.nextInt(10) + 1;
         }
-        if (player.getField().hitted(x,y))
-        {
-            if (checkWin())
-                return;
-            field.markWhenHitted(x,y);
+        if (player.getField().hitted(x, y)) {
+            if (checkWin()) return;
+            field.markWhenHitted(x, y);
             fire();
-        }
-        else {
-            field.markWhenEmpty(x,y);
+        } else {
+            field.markWhenEmpty(x, y);
             turn = false;
         }
     }
 
-    public boolean checkWin()
-    {
-        if (player.getField().getHP() == 0)
-        {
+    public boolean checkWin() {
+        if (player.getField().getHP() == 0) {
             winner.setName("AI");
             winner.setDate();
             winner.win();
