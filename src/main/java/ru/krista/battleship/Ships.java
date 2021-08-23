@@ -32,7 +32,8 @@ public class Ships {
 
     public Response placeShips(@QueryParam("x") int x, @QueryParam("y") int y,
                                @QueryParam("size") int size, @QueryParam("direction") ShipDirection direction) {
-        int res = manager.getPlayer().getField().placeShip(x, y, size, direction);
+        Ship newShip = new Ship(x, y, size, direction);
+        int res = manager.getPlayer().getField().placeShip(newShip);
         if (res != 0) {
             return Response.status(400).entity("Ship cannot be placed!").build();
         }

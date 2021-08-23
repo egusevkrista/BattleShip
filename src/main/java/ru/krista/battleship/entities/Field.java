@@ -42,7 +42,7 @@ public class Field implements Serializable {
 
     /**
      * Проверяет, достигнут ли лимит кораблей на поле боя.
-     * Если лимит не достигнут - увеличивает соотвествующий счетчик для корабля.
+     * Если лимит не достигнут - увеличивает соответствующий счетчик для корабля.
      *
      * @param size размер корабля.
      * @return Возвращает true, если лимит кораблей размером size не достигнут, false - в ином случае.
@@ -77,17 +77,14 @@ public class Field implements Serializable {
      * Проверяет возможность установки корабля по заданным параметрам и лимит кораблей на поле боя.
      * Устанавливает корабль, если это возможно.
      *
-     * @param x         координата x.
-     * @param y         координата y.
-     * @param size      размер корабля.
-     * @param direction направление установки корабля.
+     * @param newShip переменная класса Корабль
      * @return Возвращает 0, если корабль успешно установлен, -1 - в ином случае.
-     * @see Field#checkPlace(int, int, int, ShipDirection)
+     * @see Field#checkPlace(Ship)
      * @see Field#checkCountShips(int)
      */
-    public int placeShip(int x, int y, int size, ShipDirection direction) {
-        if (checkPlace(x, y, size, direction) && checkCountShips(size)) {
-            captureCells(x, y, size, direction);
+    public int placeShip(Ship newShip) {
+        if (checkPlace(newShip) && checkCountShips(newShip.getSize())) {
+            captureCells(newShip);
         } else return -1;
 
         return 0;
@@ -110,28 +107,25 @@ public class Field implements Serializable {
     /**
      * Проверяет, можно ли установить корабль с заданными параметрами.
      *
-     * @param x         координата x.
-     * @param y         координата y.
-     * @param size      размер корабля.
-     * @param direction направление корабля.
+     * @param newShip переменная класса Корабль
      * @return Возвращает true, если на это место возможно установить корабль, false - в ином случае.
      */
-    private boolean checkPlace(int x, int y, int size, ShipDirection direction) {
+    private boolean checkPlace(Ship newShip) {
         int countRight = 0;
         int countUp = 0;
 
-        if (direction == ShipDirection.RIGHT) {
-            for (int i = x; i < size + x; i++) {
-                if (checkCell(i, y)) countRight++;
+        if (newShip.getDirection() == ShipDirection.RIGHT) {
+            for (int i = newShip.getX(); i < newShip.getSize() + newShip.getX(); i++) {
+                if (checkCell(i, newShip.getY())) countRight++;
             }
-            return countRight == size;
+            return countRight == newShip.getSize();
         }
 
-        if (direction == ShipDirection.UP) {
-            for (int i = y; i > y - size; i--) {
-                if (checkCell(x, i)) countUp++;
+        if (newShip.getDirection() == ShipDirection.UP) {
+            for (int i = newShip.getY(); i > newShip.getY() - newShip.getSize(); i--) {
+                if (checkCell(newShip.getX(), i)) countUp++;
             }
-            return countUp == size;
+            return countUp == newShip.getSize();
         }
         return false;
     }
@@ -157,30 +151,29 @@ public class Field implements Serializable {
      * Ячейка со значением "1" - часть живого корабля.
      * Ячейка со значением "2" - место рядом с кораблем, в котором нельзя устанавливать другие корабли.
      *
-     * @param x         координата x.
-     * @param y         координата y.
-     * @param size      размер корабля.
-     * @param direction направление корабля.
+     * @param newShip переменная класса Корабль
      */
-    private void captureCells(int x, int y, int size, ShipDirection direction) {
-        if (direction == ShipDirection.RIGHT) {
-            for (int i = x; i < size + x; i++) {
-                mainField[i][y] = 1;
+    private void captureCells(Ship newShip) {
+        if (newShip.getDirection() == ShipDirection.RIGHT) {
+            for (int i = newShip.getX(); i < newShip.getSize() + newShip.getX(); i++) {
+                mainField[i][newShip.getY()] = 1;
             }
-            for (int i = x - 1; i <= size + x; i++) {
-                mainField[i][y - 1] = mainField[i][y + 1] = 2;
+            for (int i = newShip.getX() - 1; i <= newShip.getSize() + newShip.getX(); i++) {
+                mainField[i][newShip.getY() - 1] = mainField[i][newShip.getY() + 1] = 2;
             }
-            mainField[x - 1][y] = mainField[x + size][y] = 2;
+            mainField[newShip.getX() - 1][newShip.getY()] =
+                    mainField[newShip.getX() + newShip.getSize()][newShip.getY()] = 2;
         }
 
-        if (direction == ShipDirection.UP) {
-            for (int i = y; i > y - size; i--) {
-                mainField[x][i] = 1;
+        if (newShip.getDirection() == ShipDirection.UP) {
+            for (int i = newShip.getY(); i > newShip.getY() - newShip.getSize(); i--) {
+                mainField[newShip.getX()][i] = 1;
             }
-            for (int i = y + 1; i >= y - size; i--) {
-                mainField[x - 1][i] = mainField[x + 1][i] = 2;
+            for (int i = newShip.getY() + 1; i >= newShip.getY() - newShip.getSize(); i--) {
+                mainField[newShip.getX() - 1][i] = mainField[newShip.getX() + 1][i] = 2;
             }
-            mainField[x][y + 1] = mainField[x][y - size] = 2;
+            mainField[newShip.getX()][newShip.getY() + 1] =
+                    mainField[newShip.getX()][newShip.getY() - newShip.getSize()] = 2;
         }
     }
 
@@ -203,7 +196,7 @@ public class Field implements Serializable {
 
     /**
      * Помечает меткой "3" ячейку с заданными координатами на дополнительном поле.
-     * Метод используется для задании информации о том, что по заданным координатам у противника был корабль.
+     * Метод используется для задания информации о том, что по заданным координатам у противника был корабль.
      *
      * @param x координата x.
      * @param y координата y.
@@ -214,7 +207,7 @@ public class Field implements Serializable {
 
     /**
      * Помечает меткой "4" ячейку с заданными координатами на дополнительном поле.
-     * Метод используется для задании информации о том, что по заданным координатам у противника было пусто.
+     * Метод используется для задания информации о том, что по заданным координатам у противника было пусто.
      *
      * @param x координата x.
      * @param y координата y.
@@ -250,44 +243,34 @@ public class Field implements Serializable {
      * Используется для заполнения поле боя бота.
      */
     public void fullShipsRandom() {
-        Random r = new Random();
+
         while (countSimpleDeck <= 3) {
-            int x = r.nextInt(10) + 1;
-            int y = r.nextInt(10) + 1;
-            placeShip(x, y, 1, ShipDirection.RIGHT);
+            placeShip(createRandomShipBySize(1));
         }
         while (countTwoDeck <= 2) {
-            int x = r.nextInt(10) + 1;
-            int y = r.nextInt(10) + 1;
-            int d = r.nextInt(2);
-
-            if (d == 0) {
-                placeShip(x, y, 2, ShipDirection.RIGHT);
-            } else {
-                placeShip(x, y, 2, ShipDirection.UP);
-            }
+            placeShip(createRandomShipBySize(2));
         }
         while (countThreeDeck <= 1) {
-            int x = r.nextInt(10) + 1;
-            int y = r.nextInt(10) + 1;
-            int d = r.nextInt(2);
-
-            if (d == 0) {
-                placeShip(x, y, 3, ShipDirection.RIGHT);
-            } else {
-                placeShip(x, y, 3, ShipDirection.UP);
-            }
+            placeShip(createRandomShipBySize(3));
         }
         while (countFourDeck == 0) {
-            int x = r.nextInt(10) + 1;
-            int y = r.nextInt(10) + 1;
-            int d = r.nextInt(2);
-
-            if (d == 0) {
-                placeShip(x, y, 4, ShipDirection.RIGHT);
-            } else {
-                placeShip(x, y, 4, ShipDirection.UP);
-            }
+            placeShip(createRandomShipBySize(4));
         }
+    }
+
+    /**
+     * Создает корабль со случайными параметрами по заданному размеру.
+     *
+     * @param size размер корабля
+     * @return Возвращает созданный случайный корабль.
+     */
+    private Ship createRandomShipBySize(int size) {
+        Random r = new Random();
+
+        int x = r.nextInt(10) + 1;
+        int y = r.nextInt(10) + 1;
+        int d = r.nextInt(2);
+
+        return new Ship(x, y, size, ShipDirection.getDirectionByNumber(d));
     }
 }
