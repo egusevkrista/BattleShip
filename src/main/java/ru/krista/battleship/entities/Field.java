@@ -3,17 +3,50 @@ package ru.krista.battleship.entities;
 import java.io.Serializable;
 import java.util.Random;
 
+
+/**
+ * Класс Поле боя для игрока или оппонента.
+ */
 public class Field implements Serializable {
+    /**
+     * Основное поле боя. Двумерный массив 12х12.
+     */
     private int[][] mainField = new int[12][12];
+    /**
+     * Дополнительное поле боя для обозначения информации о промахе/попадании по вражескому кораблю.
+     * Двумерный массив 12х12.
+     */
     private int[][] secondField = new int[12][12];
 
+    /**
+     * Счетчик однопалубных кораблей.
+     */
     private int countSimpleDeck = 0;
+    /**
+     * Счетчик двухпалубных кораблей.
+     */
     private int countTwoDeck = 0;
+    /**
+     * Счетчик трехпалубных кораблей.
+     */
     private int countThreeDeck = 0;
+    /**
+     * Счетчик четырехпалубных кораблей.
+     */
     private int countFourDeck = 0;
 
+    /**
+     * Счетчик здоровья на поле боя.
+     */
     private int hp = 20;
 
+    /**
+     * Проверяет, достигнут ли лимит кораблей на поле боя.
+     * Если лимит не достигнут - увеличивает соотвествующий счетчик для корабля.
+     *
+     * @param size размер корабля.
+     * @return Возвращает true, если лимит кораблей размером size не достигнут, false - в ином случае.
+     */
     private boolean checkCountShips(int size) {
         switch (size) {
             case 1: {
@@ -40,6 +73,18 @@ public class Field implements Serializable {
         return false;
     }
 
+    /**
+     * Проверяет возможность установки корабля по заданным параметрам и лимит кораблей на поле боя.
+     * Устанавливает корабль, если это возможно.
+     *
+     * @param x         координата x.
+     * @param y         координата y.
+     * @param size      размер корабля.
+     * @param direction направление установки корабля.
+     * @return Возвращает 0, если корабль успешно установлен, -1 - в ином случае.
+     * @see Field#checkPlace(int, int, int, ShipDirection)
+     * @see Field#checkCountShips(int)
+     */
     public int placeShip(int x, int y, int size, ShipDirection direction) {
         if (checkPlace(x, y, size, direction) && checkCountShips(size)) {
             captureCells(x, y, size, direction);
@@ -48,6 +93,10 @@ public class Field implements Serializable {
         return 0;
     }
 
+    /**
+     * Заполняет неактивные ячейки поля значением -1.
+     * Неактивные ячейки - выходящие за пределы поля боя.
+     */
     public void fillInactiveCells() {
         for (int i = 0; i < 12; i++) {
             mainField[i][0] = mainField[i][11] = -1;
@@ -58,6 +107,15 @@ public class Field implements Serializable {
         }
     }
 
+    /**
+     * Проверяет, можно ли установить корабль с заданными параметрами.
+     *
+     * @param x         координата x.
+     * @param y         координата y.
+     * @param size      размер корабля.
+     * @param direction направление корабля.
+     * @return Возвращает true, если на это место возможно установить корабль, false - в ином случае.
+     */
     private boolean checkPlace(int x, int y, int size, ShipDirection direction) {
         int countRight = 0;
         int countUp = 0;
@@ -78,6 +136,14 @@ public class Field implements Serializable {
         return false;
     }
 
+    /**
+     * Проверяет, занята ли текущая ячейка.
+     *
+     * @param x координата x.
+     * @param y координата y.
+     * @return Возвращает true, если ячейка свободна, false - в ином случае.
+     * @throws ArrayIndexOutOfBoundsException Бросает исключение, если проверка ячейки вышла за пределы поля боя 12х12.
+     */
     private boolean checkCell(int x, int y) throws ArrayIndexOutOfBoundsException {
         try {
             return mainField[x][y] == 0;
@@ -86,10 +152,15 @@ public class Field implements Serializable {
         }
     }
 
-    /*
-    0 - пустая клетка
-    1 - в этой клетке часть корабля
-    2 - соседняя клетка с кораблем
+    /**
+     * Захватывает ячейки для корабля по заданным параметрам.
+     * Ячейка со значением "1" - часть живого корабля.
+     * Ячейка со значением "2" - место рядом с кораблем, в котором нельзя устанавливать другие корабли.
+     *
+     * @param x         координата x.
+     * @param y         координата y.
+     * @param size      размер корабля.
+     * @param direction направление корабля.
      */
     private void captureCells(int x, int y, int size, ShipDirection direction) {
         if (direction == ShipDirection.RIGHT) {
@@ -113,6 +184,14 @@ public class Field implements Serializable {
         }
     }
 
+    /**
+     * Метод, проверяющий, произошло ли попадание по кораблю от противника по заданным параметрам.
+     * Если противник попал - уменьшает счетчик здоровья и помечает текущую ячейку значением "3"
+     *
+     * @param x координата x.
+     * @param y координата y.
+     * @return Возвращает true, если противник попал, false - в ином случае.
+     */
     public boolean hitted(int x, int y) {
         if (mainField[x][y] == 1) {
             mainField[x][y] = 3;
@@ -122,22 +201,54 @@ public class Field implements Serializable {
         return false;
     }
 
+    /**
+     * Помечает меткой "3" ячейку с заданными координатами на дополнительном поле.
+     * Метод используется для задании информации о том, что по заданным координатам у противника был корабль.
+     *
+     * @param x координата x.
+     * @param y координата y.
+     */
     public void markWhenHitted(int x, int y) {
         secondField[x][y] = 3;
     }
 
+    /**
+     * Помечает меткой "4" ячейку с заданными координатами на дополнительном поле.
+     * Метод используется для задании информации о том, что по заданным координатам у противника было пусто.
+     *
+     * @param x координата x.
+     * @param y координата y.
+     */
     public void markWhenEmpty(int x, int y) {
         secondField[x][y] = 4;
     }
 
+    /**
+     * Метод, проверяющий, подходящая ли ячейка для стрельбы по заданным параметрам.
+     * Ячейка может быть неподходящей, если в эту ячейку уже была произведена стрельба.
+     * Используется для логики стрельбы бота.
+     *
+     * @param x координата x.
+     * @param y координата y.
+     * @return Возвращает true, если ячейка подходящая, false - в ином случае.
+     */
     public boolean normalTarget(int x, int y) {
         return secondField[x][y] == 0;
     }
 
+    /**
+     * Получает текущее здоровье
+     *
+     * @return Возвращает здоровье.
+     */
     public int getHP() {
         return this.hp;
     }
 
+    /**
+     * Заполняет поле боя случайным образом.
+     * Используется для заполнения поле боя бота.
+     */
     public void fullShipsRandom() {
         Random r = new Random();
         while (countSimpleDeck <= 3) {
