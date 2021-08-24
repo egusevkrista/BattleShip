@@ -41,11 +41,10 @@ public class PlayerData {
     /**
      * GET - запрос для получения имени игрока.
      *
-     * @return Возвращет ответ с именем игрока и кодом 200.
+     * @return Возвращает ответ с именем игрока и кодом 200.
      */
     @Path("get")
     @GET
-
     public Response getName() {
         return Response.ok().entity(manager.getPlayer().getName()).build();
     }

@@ -136,9 +136,8 @@ public class Field implements Serializable {
      * @param x координата x.
      * @param y координата y.
      * @return Возвращает true, если ячейка свободна, false - в ином случае.
-     * @throws ArrayIndexOutOfBoundsException Бросает исключение, если проверка ячейки вышла за пределы поля боя 12х12.
      */
-    private boolean checkCell(int x, int y) throws ArrayIndexOutOfBoundsException {
+    private boolean checkCell(int x, int y) {
         try {
             return mainField[x][y] == 0;
         } catch (ArrayIndexOutOfBoundsException e) {
