@@ -138,11 +138,8 @@ public class Field implements Serializable {
      * @return Возвращает true, если ячейка свободна, false - в ином случае.
      */
     private boolean checkCell(int x, int y) {
-        try {
-            return mainField[x][y] == 0;
-        } catch (ArrayIndexOutOfBoundsException e) {
-            return false;
-        }
+        if ((x>10 || x<1) || (y>10 || y<1)) return false;
+        return mainField[x][y] == 0;
     }
 
     /**
