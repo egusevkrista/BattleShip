@@ -1,7 +1,6 @@
 package ru.krista.battleship;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.krista.battleship.entities.Field;
@@ -12,7 +11,7 @@ public class ShipTest {
     private Field field;
 
     @BeforeEach
-    public void setUP() {
+    public void setUp() {
         field = new Field();
     }
 

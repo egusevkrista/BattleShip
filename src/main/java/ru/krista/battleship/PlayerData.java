@@ -3,7 +3,9 @@ package ru.krista.battleship;
 import ru.krista.battleship.entities.GameManager;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -12,7 +14,8 @@ import javax.ws.rs.core.Response;
  * Обработка запросов, связанных с именем игрока и созданием игры.
  */
 @Path("/player")
-@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.TEXT_PLAIN)
+@Produces(MediaType.TEXT_PLAIN)
 public class PlayerData {
 
 
@@ -21,7 +24,6 @@ public class PlayerData {
      */
     @Inject
     GameManager manager;
-
     /**
      * POST - запрос для задания имени игрока.
      * После задания имени менеджер начинает игру.
@@ -30,12 +32,12 @@ public class PlayerData {
      * @return Возвращает ответ с сущностью "Created" и кодом 200.
      * @see GameManager#startGame()
      */
-    @Path("set/{name}")
+    @Path("set")
     @POST
-    public Response create(@PathParam("name") String name) {
+    public Response create(@QueryParam("name") String name) {
         manager.getPlayer().setName(name);
         manager.startGame();
-        return Response.ok().entity("Created").build();
+        return Response.ok().entity("Created player: " + name).build();
     }
 
     /**
