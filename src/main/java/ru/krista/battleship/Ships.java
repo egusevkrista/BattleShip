@@ -38,9 +38,9 @@ public class Ships {
         Ship newShip = new Ship(x, y, size, direction);
         int res = manager.getPlayer().getField().placeShip(newShip);
         if (res != 0) {
-            return Response.status(400).entity("Ship cannot be placed!").build();
+            return Response.status(400).entity(1).build();
         }
-        return Response.ok().entity(newShip).build();
+        return Response.ok().entity(0).build();
     }
 
     /**
@@ -56,9 +56,9 @@ public class Ships {
     public Response placeShip(Ship newShip) {
         int res = manager.getPlayer().getField().placeShip(newShip);
         if (res != 0) {
-            return Response.status(400).entity("Ship cannot be placed!").build();
+            return Response.status(400).entity(1).build();
         }
-        return Response.ok().entity(newShip).build();
+        return Response.ok().entity(0).build();
     }
 
     /**
@@ -72,6 +72,6 @@ public class Ships {
     @PUT
     public Response fireShip(@QueryParam("x") int x, @QueryParam("y") int y) {
         manager.getPlayer().fire(x, y);
-        return Response.ok().entity("Fired").build();
+        return Response.ok().entity(0).build();
     }
 }

@@ -111,21 +111,21 @@ public class Field implements Serializable {
      * @return Возвращает true, если на это место возможно установить корабль, false - в ином случае.
      */
     private boolean checkPlace(Ship newShip) {
-        int countRight = 0;
-        int countUp = 0;
+        int countDown = 0;
+        int countLeft = 0;
 
-        if (newShip.getDirection() == ShipDirection.RIGHT) {
+        if (newShip.getDirection() == ShipDirection.DOWN) {
             for (int i = newShip.getX(); i < newShip.getSize() + newShip.getX(); i++) {
-                if (checkCell(i, newShip.getY())) countRight++;
+                if (checkCell(i, newShip.getY())) countDown++;
             }
-            return countRight == newShip.getSize();
+            return countDown == newShip.getSize();
         }
 
-        if (newShip.getDirection() == ShipDirection.UP) {
+        if (newShip.getDirection() == ShipDirection.LEFT) {
             for (int i = newShip.getY(); i > newShip.getY() - newShip.getSize(); i--) {
-                if (checkCell(newShip.getX(), i)) countUp++;
+                if (checkCell(newShip.getX(), i)) countLeft++;
             }
-            return countUp == newShip.getSize();
+            return countLeft == newShip.getSize();
         }
         return false;
     }
@@ -150,7 +150,7 @@ public class Field implements Serializable {
      * @param newShip переменная класса Корабль
      */
     private void captureCells(Ship newShip) {
-        if (newShip.getDirection() == ShipDirection.RIGHT) {
+        if (newShip.getDirection() == ShipDirection.DOWN) {
             for (int i = newShip.getX(); i < newShip.getSize() + newShip.getX(); i++) {
                 mainField[i][newShip.getY()] = 1;
             }
@@ -161,7 +161,7 @@ public class Field implements Serializable {
                     mainField[newShip.getX() + newShip.getSize()][newShip.getY()] = 2;
         }
 
-        if (newShip.getDirection() == ShipDirection.UP) {
+        if (newShip.getDirection() == ShipDirection.LEFT) {
             for (int i = newShip.getY(); i > newShip.getY() - newShip.getSize(); i--) {
                 mainField[newShip.getX()][i] = 1;
             }

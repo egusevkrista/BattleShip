@@ -4,8 +4,8 @@ package ru.krista.battleship.entities;
  * enum для перечисления направлений корабля.
  */
 public enum ShipDirection {
-    UP,
-    RIGHT;
+    DOWN,
+    LEFT;
 
     /**
      * Получение направления корабля по номеру
