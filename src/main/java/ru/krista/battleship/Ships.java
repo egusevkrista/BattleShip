@@ -74,4 +74,10 @@ public class Ships {
         manager.getPlayer().fire(x, y);
         return Response.ok().entity(0).build();
     }
+
+    @Path("get")
+    @GET
+    public Response getShips() {
+        return Response.ok().entity(manager.getPlayer().getField().getShips()).build();
+    }
 }

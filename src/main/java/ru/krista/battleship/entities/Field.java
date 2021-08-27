@@ -1,6 +1,8 @@
 package ru.krista.battleship.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
@@ -18,6 +20,7 @@ public class Field implements Serializable {
      */
     private int[][] secondField = new int[12][12];
 
+    private ArrayList<Ship> ships = new ArrayList<Ship>();
     /**
      * Счетчик однопалубных кораблей.
      */
@@ -73,6 +76,10 @@ public class Field implements Serializable {
         return false;
     }
 
+    public ArrayList getShips() {
+        return ships;
+    }
+
     /**
      * Проверяет возможность установки корабля по заданным параметрам и лимит кораблей на поле боя.
      * Устанавливает корабль, если это возможно.
@@ -85,6 +92,7 @@ public class Field implements Serializable {
     public int placeShip(Ship newShip) {
         if (checkPlace(newShip) && checkCountShips(newShip.getSize())) {
             captureCells(newShip);
+            ships.add(newShip);
         } else return -1;
 
         return 0;
@@ -138,7 +146,7 @@ public class Field implements Serializable {
      * @return Возвращает true, если ячейка свободна, false - в ином случае.
      */
     private boolean checkCell(int x, int y) {
-        if ((x>10 || x<1) || (y>10 || y<1)) return false;
+        if ((x > 10 || x < 1) || (y > 10 || y < 1)) return false;
         return mainField[x][y] == 0;
     }
 
