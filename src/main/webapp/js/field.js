@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    let sizearr = [5];
+    let countShips = 0;
     var tr, td, table = document.querySelector('table > tbody');
 
     $.ajax({
@@ -54,6 +54,13 @@ $(document).ready(function () {
         }
     }
 
+    function fullPlacement() {
+        if (countShips == 10) {
+            alert("Корабли расставлены, игра начинается.")
+            $("#sizeradiobtns").hide();
+        }
+    }
+
     function parseX(str) {
         var arr = str.split(':');
         return parseInt(arr[0]);
@@ -82,7 +89,8 @@ $(document).ready(function () {
                     data: ship,
                     success: function () {
                         paint(JSON.parse(ship));
-                        sizearr[ship.size]++;
+                        countShips++;
+                        fullPlacement()
                     }
                 });
                 break;
@@ -102,7 +110,8 @@ $(document).ready(function () {
                     data: ship,
                     success: function () {
                         paint(JSON.parse(ship));
-                        sizearr[ship.size]++;
+                        countShips++;
+                        fullPlacement()
                     }
                 });
                 break;
