@@ -2,6 +2,7 @@ package ru.krista.battleship.entities;
 
 import javax.inject.Inject;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -9,7 +10,7 @@ import java.util.Random;
  */
 public class Opponent implements Serializable {
 
-
+    ArrayList<BotFire> shots = new ArrayList<>();
     /**
      * Поле боя оппонента.
      */
@@ -63,7 +64,8 @@ public class Opponent implements Serializable {
      * Если попадает - стреляет ещё раз, и так далее.
      * Прекращает стрелять, пока не промахнется, либо не победит.
      */
-    public void fire() {
+    public int fire() {
+        int res = 0;
         Random r = new Random();
         int x = r.nextInt(10) + 1;
         int y = r.nextInt(10) + 1;
@@ -73,13 +75,20 @@ public class Opponent implements Serializable {
             y = r.nextInt(10) + 1;
         }
         if (manager.getPlayer().getField().hitted(x, y)) {
-            if (checkWin()) return;
+            if (checkWin()) return 3;
+            shots.add(new BotFire(x, y, true));
             field.markWhenHitted(x, y);
-            fire();
+            res = fire();
         } else {
             field.markWhenEmpty(x, y);
+            shots.add(new BotFire(x, y, false));
             turn = false;
         }
+        return res;
+    }
+
+    public ArrayList<BotFire> getShots() {
+        return shots;
     }
 
     /**

@@ -2,8 +2,10 @@ package ru.krista.battleship.entities;
 
 import javax.inject.Inject;
 import java.io.Serializable;
+
 /**
  * Класс Игрок в морской бой для хранения и обработки информации об игроке.
+ *
  * @author egusev
  * @version 1.0
  */
@@ -34,6 +36,7 @@ public class Player implements Serializable {
 
     /**
      * Метод получения имени игрока
+     *
      * @return Возвращает имя игрока.
      */
     public String getName() {
@@ -42,6 +45,7 @@ public class Player implements Serializable {
 
     /**
      * Получение хода игрока
+     *
      * @return Возвращает ход игрока.
      */
     public boolean getTurn() {
@@ -50,6 +54,7 @@ public class Player implements Serializable {
 
     /**
      * Задание имени игрока
+     *
      * @param name имя игрока
      */
     public void setName(String name) {
@@ -58,32 +63,43 @@ public class Player implements Serializable {
 
     /**
      * Метод начинает игру для игрока, заполняя неактивные ячейки поля.
+     *
      * @see Field#fillInactiveCells()
      */
     public void startGame() {
         field.fillInactiveCells();
     }
 
+
     /**
      * Метод стрельбы по противнику - боту.
+     *
      * @param x координата x.
      * @param y координата y.
+     * @return Возвращает 1 в случае попадания, 2 - в случае промаха, 0 - если победил игрок, 3 - если победил бот.
      */
-    public void fire(int x, int y) {
+    public int fire(int x, int y) {
+        int res = -1;
         if ((x > 0 && x < 11) && (y > 0 && y < 11)) {
             if (manager.getOpponent().getField().hitted(x, y)) {
                 field.markWhenHitted(x, y);
-                if (checkWin()) return;
+                res = 1;
+                if (checkWin()) return 0;
             } else {
                 field.markWhenEmpty(x, y);
-                manager.getOpponent().fire();
+                res = 2;
+                if (manager.getOpponent().fire() == 3) {
+                    return 3;
+                }
             }
         }
+        return res;
     }
 
 
     /**
      * Получает поля боя игрока.
+     *
      * @return Возвращает поле боя.
      */
     public Field getField() {
@@ -93,6 +109,7 @@ public class Player implements Serializable {
     /**
      * Метод проверки, победил ли игрок после выстрела.
      * При победе передает в класс "Winner" имя игрока и время победы.
+     *
      * @return Возвращает true, если игрок победил. False - в обратном случае.
      * @see Winner#win()
      */

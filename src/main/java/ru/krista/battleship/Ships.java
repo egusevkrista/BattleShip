@@ -71,13 +71,19 @@ public class Ships {
     @Path("fire")
     @PUT
     public Response fireShip(@QueryParam("x") int x, @QueryParam("y") int y) {
-        manager.getPlayer().fire(x, y);
-        return Response.ok().entity(0).build();
+        int res = manager.getPlayer().fire(x, y);
+        return Response.ok().entity(res).build();
     }
 
     @Path("get")
     @GET
     public Response getShips() {
         return Response.ok().entity(manager.getPlayer().getField().getShips()).build();
+    }
+
+    @Path("shots/get")
+    @GET
+    public Response getBotShots() {
+        return Response.ok().entity(manager.getOpponent().getShots()).build();
     }
 }
