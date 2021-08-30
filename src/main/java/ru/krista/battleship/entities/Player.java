@@ -111,13 +111,9 @@ public class Player implements Serializable {
      * При победе передает в класс "Winner" имя игрока и время победы.
      *
      * @return Возвращает true, если игрок победил. False - в обратном случае.
-     * @see Winner#win()
      */
     public boolean checkWin() {
         if (manager.getOpponent().getField().getHP() == 0) {
-            manager.getWinner().setName(this.name);
-            manager.getWinner().setDate();
-            manager.getWinner().win();
             return true;
         }
         return false;

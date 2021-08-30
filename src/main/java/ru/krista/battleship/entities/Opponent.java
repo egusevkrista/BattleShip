@@ -96,13 +96,9 @@ public class Opponent implements Serializable {
      * При победе передает в класс "Winner" имя игрока, заданное как "AI", и время победы.
      *
      * @return Возвращает true, если бот победил. False - в обратном случае.
-     * @see Winner#win()
      */
     public boolean checkWin() {
         if (manager.getPlayer().getField().getHP() == 0) {
-            manager.getWinner().setName("AI");
-            manager.getWinner().setDate();
-            manager.getWinner().win();
             return true;
         }
         return false;
