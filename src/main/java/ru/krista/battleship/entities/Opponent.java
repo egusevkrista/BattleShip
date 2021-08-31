@@ -3,6 +3,7 @@ package ru.krista.battleship.entities;
 import javax.inject.Inject;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 
 /**
@@ -99,6 +100,7 @@ public class Opponent implements Serializable {
      */
     public boolean checkWin() {
         if (manager.getPlayer().getField().getHP() == 0) {
+            manager.confirmWin(manager.getPlayer().getName(), new Date(), "Lose");
             return true;
         }
         return false;

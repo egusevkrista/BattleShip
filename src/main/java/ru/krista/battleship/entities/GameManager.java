@@ -1,9 +1,13 @@
 package ru.krista.battleship.entities;
 
+import ru.krista.battleship.JavaBean;
+
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Класс Менеджер игры для централизации всех компонентов игры.
@@ -12,7 +16,6 @@ import java.util.Date;
 public class GameManager implements Serializable {
 
     private Date startDate;
-    private Date finishDate;
     /**
      * Игрок.
      */
@@ -25,14 +28,11 @@ public class GameManager implements Serializable {
     @Inject
     private Opponent opponent;
 
+    @Inject
+    private JavaBean javaBean;
 
-    public void setFinishDate(Date finishDate) {
-        this.finishDate = finishDate;
-    }
-
-    public Date getFinishDate() {
-        return finishDate;
-    }
+    @Inject
+    private HttpSession httpSession;
 
     public Date getStartDate() {
         return startDate;
@@ -68,8 +68,13 @@ public class GameManager implements Serializable {
         opponent.startGame();
     }
 
-    public void confirmWin(String name, Date startDate, Date finishDate) {
-        //
+    public void confirmWin(String name, Date finishDate, String result) {
+        javaBean.saveGame(new Winner(name, result, this.startDate, finishDate));
+        httpSession.invalidate();
+    }
+
+    public List<Winner> getWinners() {
+        return javaBean.getWinners();
     }
 
 }

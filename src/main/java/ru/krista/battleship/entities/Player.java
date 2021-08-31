@@ -2,6 +2,7 @@ package ru.krista.battleship.entities;
 
 import javax.inject.Inject;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Класс Игрок в морской бой для хранения и обработки информации об игроке.
@@ -114,6 +115,7 @@ public class Player implements Serializable {
      */
     public boolean checkWin() {
         if (manager.getOpponent().getField().getHP() == 0) {
+            manager.confirmWin(name, new Date(), "Win");
             return true;
         }
         return false;

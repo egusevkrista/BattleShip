@@ -1,6 +1,8 @@
 package ru.krista.battleship;
 
+import ru.krista.battleship.entities.BotFire;
 import ru.krista.battleship.entities.GameManager;
+import ru.krista.battleship.entities.Winner;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -8,6 +10,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Date;
 
 
 /**
@@ -24,6 +27,7 @@ public class PlayerData {
      */
     @Inject
     GameManager manager;
+
     /**
      * POST - запрос для задания имени игрока.
      * После задания имени менеджер начинает игру.
