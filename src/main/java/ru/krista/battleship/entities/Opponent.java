@@ -4,6 +4,7 @@ import javax.inject.Inject;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -11,7 +12,7 @@ import java.util.Random;
  */
 public class Opponent implements Serializable {
 
-    ArrayList<BotFire> shots = new ArrayList<>();
+    private List<BotFire> shots = new ArrayList<>();
     /**
      * Поле боя оппонента.
      */
@@ -88,7 +89,7 @@ public class Opponent implements Serializable {
         return res;
     }
 
-    public ArrayList<BotFire> getShots() {
+    public List<BotFire> getShots() {
         return shots;
     }
 

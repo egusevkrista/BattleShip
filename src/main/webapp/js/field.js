@@ -70,7 +70,8 @@ $(document).ready(function () {
         if (countShips == 10) {
             alert("Корабли расставлены, игра начинается.")
             $("#sizeradiobtns").hide();
-            $("div#opName").hidden
+            $("div#opName").show();
+            $("table#opTable").show();
         }
     }
 
@@ -141,10 +142,12 @@ $(document).ready(function () {
                     }
                     case 0: {
                         alert("Вы победили!");
+                        window.location.replace("http://127.0.0.1:8080/BattleShip");
                         break;
                     }
                     case 3: {
                         alert("Вы проиграли!");
+                        window.location.replace("http://127.0.0.1:8080/BattleShip");
                         break;
                     }
 

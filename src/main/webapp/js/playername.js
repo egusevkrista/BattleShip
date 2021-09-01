@@ -9,4 +9,8 @@ $(document).ready(function () {
             },
         });
     });
+
+    $("#btnStatistics").click(function () {
+        window.location.replace("http://127.0.0.1:8080/BattleShip/statistics.html");
+    });
 });

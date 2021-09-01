@@ -7,10 +7,14 @@ $(document).ready(function () {
             data.forEach(function (winner, i, data) {
                 var li = document.createElement('li');
                 li.textContent = "Имя=" + winner.name + "; Результат=" + winner.result +
-                    "; Начало игры=" + winner.startDate + "; Конец игры=" + winner.startDate;
+                    "; Начало игры=" + winner.startDate + "; Конец игры=" + winner.finishDate;
                 ul.appendChild(li);
             });
         },
+    });
+
+    $("#btnHome").click(function () {
+        window.location.replace("http://127.0.0.1:8080/BattleShip");
     });
 
 });

@@ -1,6 +1,6 @@
 package ru.krista.battleship.entities;
 
-import ru.krista.battleship.JavaBean;
+import ru.krista.battleship.DataAccessObject;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
@@ -29,7 +29,7 @@ public class GameManager implements Serializable {
     private Opponent opponent;
 
     @Inject
-    private JavaBean javaBean;
+    private DataAccessObject dao;
 
     @Inject
     private HttpSession httpSession;
@@ -69,12 +69,12 @@ public class GameManager implements Serializable {
     }
 
     public void confirmWin(String name, Date finishDate, String result) {
-        javaBean.saveGame(new Winner(name, result, this.startDate, finishDate));
+        dao.saveGame(new Winner(name, result, this.startDate, finishDate));
         httpSession.invalidate();
     }
 
     public List<Winner> getWinners() {
-        return javaBean.getWinners();
+        return dao.getWinners();
     }
 
 }

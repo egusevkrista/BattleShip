@@ -2,6 +2,7 @@ package ru.krista.battleship.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
@@ -19,7 +20,7 @@ public class Field implements Serializable {
      */
     private int[][] secondField = new int[12][12];
 
-    private ArrayList<Ship> ships = new ArrayList<Ship>();
+    private List<Ship> ships = new ArrayList<>();
     /**
      * Счетчик однопалубных кораблей.
      */
@@ -75,7 +76,7 @@ public class Field implements Serializable {
         return false;
     }
 
-    public ArrayList getShips() {
+    public List<Ship> getShips() {
         return ships;
     }
 

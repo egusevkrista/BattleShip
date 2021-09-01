@@ -10,10 +10,10 @@ import java.io.Serializable;
 import java.util.List;
 
 @Stateless
-public class JavaBean implements Serializable {
+public class DataAccessObject implements Serializable {
 
     @PersistenceContext(unitName = "myUnit")
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
     public void saveGame(Winner winner) {
         entityManager.persist(winner);

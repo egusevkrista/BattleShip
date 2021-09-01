@@ -13,13 +13,13 @@ import javax.ws.rs.core.Response;
 @Path("/ships")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class Ships {
+public class ShipsResource {
 
     /**
      * Менеджер игры.
      */
     @Inject
-    GameManager manager;
+    private GameManager manager;
 
     /**
      * PUT - запрос для установки корабля по заданным параметрам.

@@ -13,10 +13,10 @@ import javax.ws.rs.core.Response;
 @Path("/winners")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class Winners {
+public class WinnersResource {
 
     @Inject
-    GameManager manager;
+    private GameManager manager;
 
     @Path("get")
     @GET

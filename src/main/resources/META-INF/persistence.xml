@@ -6,7 +6,7 @@
     <persistence-unit name="myUnit">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <jta-data-source>java:/PostgresDS</jta-data-source>
-        <class>ru.krista.battleship.JavaBean</class>
+        <class>ru.krista.battleship.DataAccessObject</class>
         <class>ru.krista.battleship.entities.Winner</class>
         <properties>
             <property name="hibernate.show_sql" value="true"/>

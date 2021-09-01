@@ -14,7 +14,7 @@ public enum ShipDirection {
      */
     public static ShipDirection getDirectionByNumber(int number)
     {
-        ShipDirection directions[] = ShipDirection.values();
+        ShipDirection[] directions = ShipDirection.values();
         return directions[number];
     }
 }

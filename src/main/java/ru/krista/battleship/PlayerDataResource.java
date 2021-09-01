@@ -19,14 +19,14 @@ import java.util.Date;
 @Path("/player")
 @Consumes(MediaType.TEXT_PLAIN)
 @Produces(MediaType.TEXT_PLAIN)
-public class PlayerData {
+public class PlayerDataResource {
 
 
     /**
      * Менеджер игры
      */
     @Inject
-    GameManager manager;
+    private GameManager manager;
 
     /**
      * POST - запрос для задания имени игрока.
